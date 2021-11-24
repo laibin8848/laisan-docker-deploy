@@ -1,7 +1,13 @@
 #! /usr/bin/env node
 const { $,question,chalk,argv } = require('zx');
 const fs = require('fs');
-const { dockerServers } = require('./package.json');
+const path = require('path');
+const { dockerServers } = require(path.resolve(process.cwd(), 'package.json'));
+
+//rewite function of zx lib
+$.quote = function(arg) {
+    return arg;
+}
 
 void async function () {
     //静默模式
@@ -44,20 +50,11 @@ void async function () {
         console.log(chalk.greenBright('building image...'))
         await $`docker build -t ${localImage} .`;
         console.log(chalk.greenBright('do tag...'));
-        const imageName = remoteImage + Math.random();
-        //hack dev server
-        if(deployto === 'dev') {//todo need remove
-            await $`docker tag ${localImage} 172.16.11.205:8001/${nameSpace}/${imageName}`;
-            console.log(chalk.greenBright('push image...'));
-            await $`docker push 172.16.11.205:8001/${nameSpace}/${imageName}`;
-        } else {
-            await $`docker tag ${localImage} ${server}/${nameSpace}/${imageName}`;
-            console.log(chalk.greenBright('push image...'));
-            await $`docker push ${server}/${nameSpace}/${imageName}`;
-        }
-        // const xx = '172.16.11.205:8001/yueyun-delivery/set-iot-admin-front';
-        // console.log(/^[a-z0-9/_.-]+$/i.test(xx));
-        // await $`docker tag ${localImage} 172.16.11.205:8001/yueyun-delivery/set-iot-admin-front_${Math.random()}`;
+        const imageName = `${remoteImage}:${deployto}_${Math.random()}`;
+        await $`docker tag ${localImage} ${server}/${nameSpace}/${imageName}`;
+        console.log(chalk.greenBright('push image...'));
+        await $`docker push ${server}/${nameSpace}/${imageName}`;
+        console.log(chalk.yellow('Haha ！！！ image publish sucess!'));
     } catch(e) {
         console.log(e.message)
     }

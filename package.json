@@ -1,6 +1,6 @@
 {
   "name": "ls-docker-deploy",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "description": "use script auto build docker image and push to remote server",
   "bin": "./index.js",
   "main": "./index.js",
