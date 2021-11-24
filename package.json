@@ -1,25 +1,11 @@
 {
   "name": "ls-docker-deploy",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "use script auto build docker image and push to remote server",
   "bin": "./index.js",
   "main": "./index.js",
   "scripts": {
     "test": "test"
-  },
-  "dockerServers": {
-    "dev": {
-      "localImage": "set-iot-admin-front-dev",
-      "server": "172.16.11.205:8001",
-      "nameSpace": "yueyun-delivery",
-      "remoteImage": "set-iot-admin-front"
-    },
-    "uat": {
-      "localImage": "set-iot-admin-front-uat",
-      "server": "harbor.gdii-yueyun.com",
-      "nameSpace": "yueyun-iot",
-      "remoteImage": "set-iot-admin-front"
-    }
   },
   "keywords": [
     "zx",
