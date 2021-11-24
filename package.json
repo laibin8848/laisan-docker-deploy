@@ -1,0 +1,20 @@
+{
+  "name": "ls-docker-deploy",
+  "version": "1.0.5",
+  "description": "use script auto build docker image and pus",
+  "bin": "./index.mjs",
+  "main": "./index.mjs",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "zx",
+    "docker"
+  ],
+  "author": "laisan",
+  "license": "UNLICENSED",
+  "devDependencies": {},
+  "dependencies": {
+    "zx": "^4.2.0"
+  }
+}
