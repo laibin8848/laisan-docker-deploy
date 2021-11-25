@@ -55,6 +55,7 @@ void async function () {
         console.log(chalk.greenBright('push image...'));
         await $`docker push ${server}/${nameSpace}/${imageName}`;
         console.log(chalk.yellow('Haha ！！！ image publish sucess!'));
+        console.log(chalk.yellow(`${server}/${nameSpace}/${imageName}`));
     } catch(e) {
         console.log(e.message)
     }
