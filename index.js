@@ -29,7 +29,16 @@ void async function () {
     }
     
     //判断pkg文件里有没有docker部署的相关配置，如果有读取配置数组，可配置不同环境
-    let { deployto } = argv;
+    let { deployto, tag } = argv;
+    if(!tag) {
+        tag = await question('Please add one tag to describe this change.');
+    }
+    
+    if(!tag) {
+        console.log(chalk.red(`Unreadable change description.`));
+        return;
+    }
+    
     const deploys = Object.keys(dockerServers);
     if(!deploys.includes(deployto)) {
         deployto = await question('Please select one server to deploy.', { choices: deploys });
@@ -50,12 +59,12 @@ void async function () {
         console.log(chalk.greenBright('building image...'))
         await $`docker build -t ${localImage} .`;
         console.log(chalk.greenBright('do tag...'));
-        const imageName = `${remoteImage}:${deployto}_${Math.random()}`;
-        await $`docker tag ${localImage} ${server}/${nameSpace}/${imageName}`;
+        const remotePath = `${server}/${nameSpace}/${remoteImage}:${deployto}_${tag}_${Math.random()}`;
+        await $`docker tag ${localImage} ${remotePath}`;
         console.log(chalk.greenBright('push image...'));
-        await $`docker push ${server}/${nameSpace}/${imageName}`;
+        await $`docker push ${remotePath}`;
         console.log(chalk.yellow('Haha ！！！ image publish sucess!'));
-        console.log(chalk.yellow(`${server}/${nameSpace}/${imageName}`));
+        console.log(chalk.yellow(`Please copy the image for deploy! ${remotePath}`));
     } catch(e) {
         console.log(e.message)
     }
